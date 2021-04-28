@@ -1,0 +1,1 @@
+env_project\Scripts\python.exe main.py
