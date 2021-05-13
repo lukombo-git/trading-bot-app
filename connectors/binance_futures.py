@@ -58,7 +58,6 @@ class BinanceClient:
         self._headers = {'X-MBX-APIKEY': self._public_key}
 
         self.contracts = self.get_contracts()
-
         self.balances = self.get_balances()
 
         self.prices = dict()
@@ -436,14 +435,15 @@ class BinanceClient:
                 except RuntimeError as e:  # Handles the case  the dictionary is modified while loop through it
                     logger.error("Error while looping through the Binance strategies: %s", e)
 
-            if data['e'] == "aggTrades":
-
+            if data['e'] == "aggTrade":
                 symbol = data['s']
+                print(symbol)
 
                 for key, strat in self.strategies.items():
                     if strat.contract.symbol == symbol:
                         res = strat.parse_trades(float(data['p']), float(data['q']), data['T'])  # Updates candlesticks
                         strat.check_trade(res)
+                        print(strat.check_trade(res))
 
     def subscribe_channel(self, contracts: typing.List[Contract], channel: str):
 
@@ -474,7 +474,6 @@ class BinanceClient:
             logger.error("Websocket error while subscribing to @bookTicker and @aggTrade: %s", e)
 
         self._ws_id += 1
-
 
     def get_trade_size(self, contract: Contract, price: float, balance_pct: float):
 

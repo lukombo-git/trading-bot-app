@@ -309,6 +309,10 @@ class StrategyEditor(tk.Frame):
             if len(new_strategy.candles) == 0:
                 self.root.logging_frame.add_log(f"No historical data retrieved for {contract.symbol}")
                 return
+            #adding a new strategy
+            if exchange == "Binance":
+                self._exchanges[exchange].subscribe_channel([contract], "aggTrade")
+                #print(self._exchanges[exchange].subscribe_channel([contract], "aggTrades"))
 
             self._exchanges[exchange].strategies[b_index] = new_strategy
 
